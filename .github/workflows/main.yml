@@ -18,3 +18,7 @@ jobs:
         with:
           name: slide
           path: output
+      - uses: actions/download-artifact@v2
+        with:
+          name: slide
+          path: output 
