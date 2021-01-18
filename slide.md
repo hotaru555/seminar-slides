@@ -1,11 +1,13 @@
 ---
 marp: true
----
-
-## Reverse Debugging with ETM
-
-Wenxuan SHI, Xueying ZHANG and Haonan LI
-
+title: "Weekly Seminar"
+author: "Haonan, Wenxuan, Xueying"
+institute: "COMPASS"
+urlcolor: green
+colortheme: "beaver"
+date: "Jan 19, 2021"
+theme: "CambridgeUS"
+lang: en-US
 ---
 
 # The plan
