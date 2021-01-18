@@ -9,6 +9,8 @@ jobs:
   convert_via_pandoc:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+      - run: mkdir output
       - uses: docker://pandoc/latex
         with:
-          args: -f markdown-raw_tex --pdf-engine=xelatex slide.md -o slide.pdf
+          args: -f markdown-raw_tex --pdf-engine=xelatex slide.md -o output/slide.pdf
