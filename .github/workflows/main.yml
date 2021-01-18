@@ -11,4 +11,4 @@ jobs:
     steps:
       - uses: docker://pandoc/latex
         with:
-          args: -f markdown-raw_tex --pdf-engine=xelatex *.md -o slide.pdf
+          args: -f markdown-raw_tex --pdf-engine=xelatex slide.md -o slide.pdf
