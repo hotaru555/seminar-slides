@@ -25,11 +25,23 @@ Topic: **reverse debugging**
 2. Read a paper "DoublePlay: Parallelizing Sequential Logging and Replay".
 
 ## Xueying
-1. a work
-2. another work
+1. Read the document of ETMv4 to catch up with the progress.
 
 ## Haonan
 Read a paper "ReVirt: Enabling Instrusion Analysis through Virtual-Machine Logging and Replay"
+
+---
+
+# ETM
+
+- real time
+- data trace: not supporded on ARMv8
+- instruction trace:
+  - PE -(some instractions)-> trace unit(resources) -> filter(programmable) -(trace stream)-> trace analyzer
+  - encode(trace unit) and decode(analyzer)
+  - return stack
+  - synchronize information
+  - contains: virtual address and 'system state' (EL, securtity state, condition, etc.)
 
 ---
 
