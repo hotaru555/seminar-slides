@@ -13,12 +13,8 @@ jobs:
       - run: mkdir output
       - uses: docker://pandoc/latex
         with:
-          args: -f markdown-raw_tex --pdf-engine=xelatex slide.md -o output/slide.pdf
+          args: -f markdown-raw_tex --pdf-engine=xelatex slide.md -o output/slide.pdf -t beamer
       - uses: actions/upload-artifact@master
         with:
           name: slide
           path: output
-      - uses: actions/download-artifact@v2
-        with:
-          name: slide
-          path: output 
