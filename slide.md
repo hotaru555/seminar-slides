@@ -101,7 +101,7 @@ K. Veeraraghavan et al., “DoublePlay: Parallelizing Sequential Logging and Rep
 
 ---
 
-![](https://i.loli.net/2021/01/18/uj7FRDfnMeB8VUx.png)
+![](doubleplay.png)
 
 ---
 
