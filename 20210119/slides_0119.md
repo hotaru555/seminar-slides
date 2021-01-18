@@ -96,3 +96,37 @@ K. Veeraraghavan et al., “DoublePlay: Parallelizing Sequential Logging and Rep
 ![](notes.png)
 
 Details at ["My notes on DoublePlay-Parallelizing-Sequential-Logging-and-Replay"](https://www.whexy.com/2021/01/16/DoublePlay-Parallelizing-Sequential-Logging-and-Replay/)
+
+---
+
+# Record and Replay: Data flow
+
+
+---
+
+# Paper Introduction
+
+- George W. Dunlap, Peter M. Chen, "ReVirt: Enabling Intrusion Analysis through Virtual-Machine Logging and Replay", OSDI'02
+
+- Record and replay with virtual machine
+
+
+
+---
+
+# Data reconstruction: two event types
+
+- Deterministic: could reconstruct by memeory snapshot and static code (Yuxin's working)
+
+- Non-deterministic: should record more information to replay
+    - event timestamp (e.g., asynchronous interrupt)
+    - external input (e.g., keyboard, network input)
+    - race conditions (e.g., Dirty COW)
+
+---
+
+# Next Week Plan
+
+- Paper reading: George W. Dunlap, Peter M. Chen, "Execution replay on multiprocessor virtual machines", VEE'08
+
+- Document collecting: write and collect some documents for ETM, Arm-TF
