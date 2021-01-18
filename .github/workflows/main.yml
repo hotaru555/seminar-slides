@@ -1,0 +1,14 @@
+# A workflow to automatically convert markdown to pdf.
+
+name: md2pdf
+
+
+on: push
+
+jobs:
+  convert_via_pandoc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: docker://pandoc/latex
+        with:
+          args: -f markdown-raw_tex --pdf-engine=xelatex *.md -o slide.pdf
