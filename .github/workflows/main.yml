@@ -14,3 +14,7 @@ jobs:
       - uses: docker://pandoc/latex
         with:
           args: -f markdown-raw_tex --pdf-engine=xelatex slide.md -o output/slide.pdf
+      - uses: actions/upload-artifact@master
+        with:
+          name: slide
+          path: output
