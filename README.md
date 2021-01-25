@@ -1,12 +1,16 @@
 # seminar-slides 使用说明
 
 ## 🤷🏻 新的一周我该做什么
-- 直接修改上周的 Markdown 文件。
+- git pull
+- 直接修改 `slide.md` 文件。
 - 如需要增加图片，增加在根目录即可。
+- git pull，解决冲突
+- git push
 
 ## 🖐 手动完成的工作
 - 按需清除无用图片。
 - 每周定稿后给最后一个提交打 tag。
+- 每周定稿后发布一个 release。
 
 ## 🖥️ 自动完成的工作
 - 每次 git push，都会尝试编译 PDF 文件到 `output` 文件夹中。
