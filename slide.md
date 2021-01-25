@@ -28,7 +28,8 @@ Topic: **reverse debugging**
 1. Read the document of ETMv4 to catch up with the progress.
 
 ## Haonan
-Read a paper "ReVirt: Enabling Instrusion Analysis through Virtual-Machine Logging and Replay"
+
+1. Read a paper: "iReplayer: In-situ and Identical Record-and-Replay for Multithreaded Applications"
 
 ---
 
@@ -111,35 +112,59 @@ Details at ["My notes on DoublePlay-Parallelizing-Sequential-Logging-and-Replay"
 
 ---
 
-# Record and Replay: Data flow
-
-
----
 
 # Paper Introduction
 
-- George W. Dunlap, Peter M. Chen, "ReVirt: Enabling Intrusion Analysis through Virtual-Machine Logging and Replay", OSDI'02
+- Hongyu Liu, Tongping Liu et al. "iReplayer: In-situ and Identical Record-and-Replay for Multithreaded Applications", PLDI’18
 
-- Record and replay with virtual machine
+- University of Texas at San Antonio, Huawei US Lab
 
+- Only replay the execution **if necessary**
+
+- ~~This paper was rejected 7 times~~
 
 
 ---
 
-# Data reconstruction: two event types
+# Types of Replay
 
-- Deterministic: could reconstruct by memeory snapshot and static code (Yuxin's working)
+  - *Lawful*: replay is re-execution (ReVirt)
+  - *Neutral*: capture/snapshot is also replay (TTD, REPT)
+  - *Chaotic*: rollback is also replay (iReplayer)
 
-- Non-deterministic: should record more information to replay
-    - event timestamp (e.g., asynchronous interrupt)
-    - external input (e.g., keyboard, network input)
-    - race conditions (e.g., Dirty COW)
+
+---
+
+# iReplayer
+Desgin goal: in-situ, identical, efficient
+
+![](ireplayer.png)
+
+---
+
+# Syscalls in Different Types
+
+|Category| Syscall Examples|
+|--------|-----------------|
+|Repeatable |`getpid`, `getcwd`|
+|Recordable |`gettimeofday`, `mmap`, `open`|
+|Revocable |file `read`/`write`|
+|Deferrable |`close`, `munmap`, (thread exits)|
+|Irrevocable |`fork`, `lseek`|
+
+
+---
+
+# About REPT: OSDI'18
+
+- "Reverse Debugging of Failures in Deployed Software"
+- They adapted and deployed in WinDbg (see: https://youtu.be/0VUy4mqA_Lk)
+- An improvement of *Time Travle Debugging*
+
 
 ---
 
 # Next Week Plan
 
-- Paper reading: George W. Dunlap, Peter M. Chen, "Execution replay on multiprocessor virtual machines", VEE'08
-
-- Document collecting: write and collect some documents for ETM, Arm-TF
+- For these categories of syscalls, to find some ways to record
 
