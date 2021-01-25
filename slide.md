@@ -1,31 +1,20 @@
 ---
 marp: true
----
-
-## Reverse Debugging with ETM
-
-Wenxuan SHI, Xueying ZHANG and Haonan LI
-
+title: "Weekly Seminar"
+author: "Haonan, Wenxuan, Xueying"
+institute: "COMPASS"
+urlcolor: green
+colortheme: "beaver"
+date: "Jan 26, 2021"
+theme: "CambridgeUS"
+lang: en-US
 ---
 
 # The plan
 
-Wenxuan SHI & Xueying ZHANG: find a research topic for Group Project.
+## Wenxuan & Xueying
 
-Haonan LI: NULL
-
----
-
-# The work
-
-Topic: **reverse debugging**
-
-## Wenxuan
-1. Some research on gdb reverse debugging
-2. Read a paper "DoublePlay: Parallelizing Sequential Logging and Replay".
-
-## Xueying
-1. Read the document of ETMv4 to catch up with the progress.
+- Sync
 
 ## Haonan
 
@@ -33,85 +22,92 @@ Topic: **reverse debugging**
 
 ---
 
-# ETM
-
-- real time
-- data trace: not supporded on ARMv8
-- instruction trace:
-  - PE -(some instractions)-> trace unit(resources) -> filter(programmable) -(trace stream)-> trace analyzer
-  - encode(trace unit) and decode(analyzer)
-  - return stack
-  - synchronize information
-  - contains: virtual address and 'system state' (EL, securtity state, condition, etc.)
+## Replayer Impl
 
 ---
 
-# GDB: Reverse Debugging with Record and Replay
+# Input
 
-- GDB can **record** a log of process execution and save it.
-- This record can be loaded later on, and used for debugging. This is called offline debugging.
-- It offers the advantage that you can catch the issue once, and **replay** it as much as needed to find the root cause and fix it.
+Record and reConstruct provide log (including every instruction and data change) to **replayer**.
 
----
-
-# Performance issue
-
-To realize this functionality, GDB is in fact executing the software, one assembly instruction after another and **recording relevant registers and memory locations**.
-
-This is a slow operation that can drastically change the timing of process execution, and thus **change the conditions that raise the bug.**
+![](rnr02.png)
 
 ---
 
-# GDB solution
+# Replayer == Browser
 
-- Use SoC IPs to accelerate the operation.
-- GDB has support for "Processor Trace (PT)" and "Branch Trace Store (BTS)" IP on Intel processors.
-
-
-## Limitation
-
-- It doesn't support ARM
-- If hardware acceleration is enabled, only **execution flow** is record. (branch record)
+![](rnr03.png)
 
 ---
 
-# Our work
+# Functionality
 
-- Use ETM to accelerate recording
-- Try to trace **data flow** (knowing the exact value change in memory and register)
-- Try to support debugging on **multi-core**
+All registers and memories are **immutatable** during debugging.
 
----
+Provide developers filters, searching tools to understand how program goes.
 
-# Multicore: issue on recording
+![](rnr04.png)
 
-- shared memory (shared **source of truth**)
-- order matters!
-
-## Common solution
-
-turn multicore program into a **equivalent** unicore program.
-
-(equivalent: two program beginning at same status end at same status.)
+The workload is almost none!
 
 ---
 
-# DoublePlay
+# Replayer version 2
 
-K. Veeraraghavan et al., “DoublePlay: Parallelizing Sequential Logging and Replay,” ACM Trans. Comput. Syst., vol. 30, no. 1, pp. 1–24, Feb. 2012, doi: 10.1145/2110356.2110359.
-
----
-
-![](doubleplay.png)
+- The instructions actually **run** in the processors.
+- Developers can manipulate replay.
 
 ---
 
-![](notes.png)
-
-Details at ["My notes on DoublePlay-Parallelizing-Sequential-Logging-and-Replay"](https://www.whexy.com/2021/01/16/DoublePlay-Parallelizing-Sequential-Logging-and-Replay/)
+![](rnr05.png)
 
 ---
 
+# Challanges of version 2
+
+Say, we want to have a replayer written in C/C++.
+
+1. Analyse the record log
+2. Read user input commands (continue, reverse, goto, ...)
+3. Dynamically run assembly
+
+Notice we are writting a replayer running as a normal program, the hard parts are:
+
+1. Assembly are **run-time** determined, rather than determined during compiling.
+2. We don't know what assembly will do, it may do something harmful, like modify a register we used in the replayer, or override stack in the memory.
+
+---
+
+# Challanges of version 2 - Cont'd
+
+## Challange 1
+Q: Assembly are **run-time** determined, rather than determined during compiling.
+
+A: We might need to modify `PC` register in some hacky ways.
+
+---
+
+# Challanges of version 2 - Cont'd
+
+## Challange 2
+Q: Assembly may do something harmful.
+
+A: We need a good isolation. Maybe a virtual machine?
+    
+## Challange 3
+Q: If running in actual host, how to manage the context?
+
+A: context switch! Can OS help? Let one thread (replay controller) to control another thread (assembly)? How?
+
+---
+
+## Challange 4
+
+Q: If OS can't help, switch context by our own, **language-level**?
+
+A: Associated with the C++ Coroutine. Coroutine needs to store and restore the scene.
+
+---
 
 # Paper Introduction
 
@@ -164,7 +160,11 @@ Desgin goal: in-situ, identical, efficient
 
 ---
 
-# Next Week Plan
+# Plan
 
+## Haonan
 - For these categories of syscalls, to find some ways to record
 
+## Wenxuan
+- Understand the design graph
+- Find ways to replay.
