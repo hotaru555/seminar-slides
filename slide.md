@@ -22,7 +22,13 @@ lang: en-US
 
 ---
 
+# Wenxuan's work
+
 ## Replayer Impl
+Discuss in next slides
+
+## read the paper "REPT"
+Wrote a blog, [My notes on REPT:Reverse Debugging of Failures in Deployed Software](https://www.whexy.com/2021/01/21/REPT/)
 
 ---
 
@@ -45,8 +51,6 @@ Record and reConstruct provide log (including every instruction and data change)
 All registers and memories are **immutatable** during debugging.
 
 Provide developers filters, searching tools to understand how program goes.
-
-![](rnr04.png)
 
 The workload is almost none!
 
@@ -99,13 +103,17 @@ Q: If running in actual host, how to manage the context?
 
 A: context switch! Can OS help? Let one thread (replay controller) to control another thread (assembly)? How?
 
----
-
 ## Challange 4
 
 Q: If OS can't help, switch context by our own, **language-level**?
 
 A: Associated with the C++ Coroutine. Coroutine needs to store and restore the scene.
+
+---
+
+# Replay Design
+
+TO BE DECIDED.
 
 ---
 
