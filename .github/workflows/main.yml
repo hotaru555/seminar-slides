@@ -10,7 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: mkdir output
       - uses: docker://pandoc/latex
         with:
-          args: -f markdown-raw_tex --pdf-engine=xelatex slide.md -o output/slide.pdf
+          args: -f markdown-raw_tex --pdf-engine=xelatex slide.md -o output/slide.pdf -t beamer
+      - name: Commit report
+        run: |
+          git config --global user.name 'whexy'
+          git config --global user.email 'whexy@outlook.com'
+          git add --all
+          git commit -m "Automated Build"
+          git push
