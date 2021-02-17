@@ -1,183 +1,172 @@
 ---
-marp: true
-title: "Weekly Seminar"
-author: "Haonan, Wenxuan, Xueying"
+title: "Seminar-slides Guide"
+author: "Wenxuan"
 institute: "COMPASS"
-urlcolor: green
+urlcolor: blue
 colortheme: "beaver"
-date: "Jan 26, 2021"
+date: "Feb 18, 2021"
 theme: "Heverlee"
 lang: en-US
 ---
 
-# The plan
+# Seminar-slides Markdown Guideline
 
-## Wenxuan & Xueying
+## Empty Lines
 
-- Sync
+Leave a blank line between all **non-intimate** elements. The specific rules are as follows.
 
-## Haonan
+- Leave a blank line between the separator and the contextual content.
+- A blank line between the title and the content.
+- Leave a blank line at deliberate line breaks.
 
-1. Read a paper: "iReplayer: In-situ and Identical Record-and-Replay for Multithreaded Applications"
+Intimacy exception.
 
----
-
-# Wenxuan's work
-
-## Replayer Impl
-Discuss in next slides
-
-## read the paper "REPT"
-Wrote a blog, [My notes on REPT:Reverse Debugging of Failures in Deployed Software](https://www.whexy.com/2021/01/21/REPT/)
+- No blank lines should be left between unordered lists and ordered lists.
+- No blank lines should be left between content that needs to be kept continuous.
 
 ---
 
-# Input
+## Example
 
-Record and reConstruct provide log (including every instruction and data change) to **replayer**.
-
-![](rnr02.png)
-
----
-
-# Replayer == Browser
-
-![](rnr03.png)
+```markdown
+this is the last line of the page, content ends.
 
 ---
 
-# Functionality
+## A Title
 
-All registers and memories are **immutatable** during debugging.
+This is the line 1 in the page, aba, aba.
 
-Provide developers filters, searching tools to understand how program goes.
+This is the line 2 in the page, bala, bala,
+and this is also the line 2 in the page,
+and this is still the line 2 in the page.
 
-The workload is almost none!
-
----
-
-# Replayer version 2
-
-- The instructions actually **run** in the processors.
-- Developers can manipulate replay.
+- My point 1
+- My point 2
+```
 
 ---
 
-![](rnr05.png)
+## The title symbol
+
+::: columns
+
+:::: column
+
+### Example {.shrink}
+
+```markdown
+# Section name
+
+## A title
+
+This is content.
 
 ---
 
-# Challanges of version 2
+## B title
 
-Say, we want to have a replayer written in C/C++.
+This is content.
 
-1. Analyse the record log
-2. Read user input commands (continue, reverse, goto, ...)
-3. Dynamically run assembly
+### A block title
 
-Notice we are writting a replayer running as a normal program, the hard parts are:
+Foo Bar
+```
 
-1. Assembly are **run-time** determined, rather than determined during compiling.
-2. We don't know what assembly will do, it may do something harmful, like modify a register we used in the replayer, or override stack in the memory.
+::::
 
----
+:::: column
 
-# Challanges of version 2 - Cont'd
+- Use `#` as section separator, `##` as page title, and `###` as block separator.
+- `#` (section) must be followed by `##` and cannot be immediately followed by content.
 
-## Challange 1
-Q: Assembly are **run-time** determined, rather than determined during compiling.
+:::: 
 
-A: We might need to modify `PC` register in some hacky ways.
 
----
-
-# Challanges of version 2 - Cont'd
-
-## Challange 2
-Q: Assembly may do something harmful.
-
-A: We need a good isolation. Maybe a virtual machine?
-    
-## Challange 3
-Q: If running in actual host, how to manage the context?
-
-A: context switch! Can OS help? Let one thread (replay controller) to control another thread (assembly)? How?
-
-## Challange 4
-
-Q: If OS can't help, switch context by our own, **language-level**?
-
-A: Associated with the C++ Coroutine. Coroutine needs to store and restore the scene.
+:::
 
 ---
 
-# Replay Design
+# Pandoc Syntax
 
-TO BE DECIDED.
+## How to: The column example
 
----
+### Guide
+The page is written by Wenxuan to show you guys how to create double columns in markdown to beamer.
 
-# Paper Introduction
+. . .
 
-- Hongyu Liu, Tongping Liu et al. "iReplayer: In-situ and Identical Record-and-Replay for Multithreaded Applications", PLDI’18
+### Sample
 
-- University of Texas at San Antonio, Huawei US Lab
+::: columns
 
-- Only replay the execution **if necessary**
+:::: column
 
-- ~~This paper was rejected 7 times~~
+Left side text.
 
+Left side text again.
 
----
+```rust
+pub fn foo() {
+  println!("Hello World");
+}
+```
 
-# Types of Replay
+::::
 
-  - *Lawful*: replay is re-execution (ReVirt)
-  - *Neutral*: capture/snapshot is also replay (TTD, REPT)
-  - *Chaotic*: rollback is also replay (iReplayer)
+:::: column
 
+Right side text.
 
----
+- Can do anything.
+- Can do almost everything.
 
-# iReplayer
-Desgin goal: in-situ, identical, efficient
+::::
 
-![](ireplayer.png)
-
----
-
-# Syscalls in Different Types
-
-|Category| Syscall Examples|
-|--------|-----------------|
-|Repeatable |`getpid`, `getcwd`|
-|Recordable |`gettimeofday`, `mmap`, `open`|
-|Revocable |file `read`/`write`|
-|Deferrable |`close`, `munmap`, (thread exits)|
-|Irrevocable |`fork`, `lseek`|
-
+:::
 
 ---
 
-# About REPT: OSDI'18
+## How to: The image example
 
-- "Reverse Debugging of Failures in Deployed Software"
-- They adapted and deployed in WinDbg (see: https://youtu.be/0VUy4mqA_Lk)
-- An improvement of *Time Travle Debugging*
+Use syntax like `![](rnr03.png){height=80%}` to control height and width of images.
 
----
-
-# XueYing's work
-
-Study TOEFL and lay down as a salt fish. 
+![](rnr03.png){height=80%}
 
 ---
 
-# Plan
+## How to: Fancy layout
 
-## Haonan
-- For these categories of syscalls, to find some ways to record
+### Proposal
 
-## Wenxuan
-- Understand the design graph
-- Find ways to replay.
+- Point A
+- Point B
+
+::: columns
+
+:::: {.column width="40%"}
+
+### Pros (40% width)
+
+- Good
+- Better
+- Best
+
+::::
+
+:::: {.column width="60%"}
+
+### Cons (60% width)
+
+- Bad
+- Worse
+- Worst
+
+::::
+
+:::
+
+### Conclusion
+
+- Let's go for it!
+- No way we go for it!
