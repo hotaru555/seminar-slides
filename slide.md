@@ -6,7 +6,7 @@ institute: "COMPASS"
 urlcolor: green
 colortheme: "beaver"
 date: "Jan 26, 2021"
-theme: "CambridgeUS"
+theme: "Heverlee"
 lang: en-US
 ---
 
