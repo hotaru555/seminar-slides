@@ -1,15 +1,84 @@
 ---
 title: "Summary for Winter Holiday"
-author: "Haonan Lu"
+author: "Haonan Lu, Wenxuan Shi, Xueying Zhang"
 institute: "COMPASS"
 urlcolor: blue
 colortheme: "beaver"
-date: "Feb 25, 2021"
+date: "March 2, 2021"
 theme: "Heverlee"
 aspectratio: 169
 lang: en-US
 marp: true
 ---
+
+# Wenxuan
+
+## What have I done?
+
+::: columns
+
+:::: column
+
+**The ETM Debugging Project**
+
+- Sync.
+
+- Read the data flow derivation python code.
+
+::::
+
+:::: column
+
+**Group Project (Reverse Debugging)**
+
+- Put together [a document](https://www.notion.so/whexy/Reverse-Debugging-a185806e3f2040cfb52e0a30988896a1), introduce to "reverse debugging".
+
+- For example, GDB reverse debugging doesn't need any data flow. It use the GDB interface to directly execute instructions on the machine.
+
+- Keep focusing on the replay mechanism.
+
+:::: 
+
+:::
+
+---
+
+## Challange
+
+### The ETM debugging project
+
+#### Original Design:
+
+a replay machanism -> **reproduce** the bug -> help to find buggy instructions.
+
+#### Currently Design:
+
+restore correct control and data flow -> **static** analysis -> find buggy instructions.
+
+### Challange
+
+Since I was about to research on the replay machanism, there is nothing I can do for now.
+
+---
+
+## Challange
+
+### The Group Project (Reverse Debugging)
+
+Record and **Replay**.
+
+Depend on the effect of control flow and data flow restoration.
+
+Need more feedback from Record part. Syncing...
+
+---
+
+## Next Week's Plan
+
+- What can I do for the ETM debugging project?
+
+- Explore different ways of parallel programs replay machanism. (modify priority, hook and add delay, ...)
+
 
 # Introduction to Linux Syscall
 
