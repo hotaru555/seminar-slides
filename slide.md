@@ -79,9 +79,10 @@ Need more feedback from Record part. Syncing...
 
 - Explore different ways of parallel programs replay machanism. (modify priority, hook and add delay, ...)
 
----
 
 # XueYing
+
+---
 
 ## Have done
 
@@ -91,7 +92,6 @@ Need more feedback from Record part. Syncing...
 
 - Find what I can do for the projects and do some useful work. 
 
----
 
 
 # Introduction to Linux Syscall
