@@ -1,6 +1,6 @@
 ---
 title: "Summary for Winter Holiday"
-author: "Haonan Li"
+author: "Haonan Lu"
 institute: "COMPASS"
 urlcolor: blue
 colortheme: "beaver"
@@ -41,6 +41,24 @@ trace_exit:
 
 ---
 
+
+## How Linux handle syscall (arm64)? (cont.) 
+```c
+static void invoke_syscall(struct pt_regs *regs, unsigned int scno,
+			   unsigned int sc_nr,
+			   const syscall_fn_t syscall_table[])
+{
+	long ret;
+
+	// ... some checks and find in syscall_table
+
+	regs->regs[0] = ret;
+}
+```
+
+
+---
+
 ## How Linux handle syscall (arm64)? (cont.) 
 
 Linux has provided hook positions.
@@ -57,6 +75,25 @@ void syscall_trace_exit(struct pt_regs *regs)
 		tracehook_report_syscall(regs, PTRACE_SYSCALL_EXIT);
 
 	rseq_syscall(regs);
+}
+```
+
+---
+
+## How Linux handle syscall (arm64)? (cont.) 
+Besides, we also need hook in the enter of syscall, which also provided by Linux.
+
+```c
+int syscall_trace_enter(struct pt_regs *regs)
+{
+	// ... some pre-check ...
+
+	if (test_thread_flag(TIF_SYSCALL_TRACEPOINT))
+		trace_sys_enter(regs, regs->syscallno);
+
+	// ... audit syscall entry
+
+	return regs->syscallno;
 }
 ```
 
@@ -90,7 +127,42 @@ root@ubuntu:/home# sysdig proc.name=zsh and proc.pid=3981
 3365 ... < rt_sigprocmask 
 ```
 
+---
+
+## Issues and Prograss
+
+I have made following attempts last week:
+
+- Compile and Install Sysdig on Juno: *\textcolor{red}{Failed to compile finally}*
+
+- Install Debian on Juno and then install Sysdig: *\textcolor{red}{Critical isssue: cannot use ETM}*
+
+- Write syscall hook manually: *\textcolor{blue}{In progress}*
+
 # Plan: Deploy and Make Experiments
+
+---
+
+## Syscall hook: print syscall id in `sys_enter`
+
+But what do these bemused numbers represent for?
+
+```bash
+[  207.532130] [my_sysdig:] call syscall 0x122bbec0, 2: 0x3f, 3:0x8d66090
+[  207.532135] [my_sysdig:] call syscall 0x11d4bec0, 2: 0x3f, 3:0x8d66090
+[  207.532137] [my_sysdig:] call syscall 0x11cf3ec0, 2: 0x42, 3:0x8d66090
+[  207.532141] [my_sysdig:] call syscall 0x122bbec0, 2: 0x3f, 3:0x8d66090
+[  207.532143] [my_sysdig:] call syscall 0x11cf3ec0, 2: 0x3f, 3:0x8d66090
+[  207.532146] [my_sysdig:] call syscall 0x122bbec0, 2: 0x3f, 3:0x8d66090
+[  207.532150] [my_sysdig:] call syscall 0x11cf3ec0, 2: 0x16, 3:0x8d66090
+[  207.532151] [my_sysdig:] call syscall 0x122bbec0, 2: 0x3f, 3:0x8d66090
+[  207.532155] [my_sysdig:] call syscall 0x11d4bec0, 2: 0x3f, 3:0x8d66090
+[  207.532159] [my_sysdig:] call syscall 0x122bbec0, 2: 0x3f, 3:0x8d66090
+[  207.532162] [my_sysdig:] call syscall 0x122bbec0, 2: 0x3f, 3:0x8d66090
+[  207.532166] [my_sysdig:] call syscall 0x11d4bec0, 2: 0x39, 3:0x8d66090
+[  207.532169] [my_sysdig:] call syscall 0x11cf3ec0, 2: 0x42, 3:0x8d66090
+[  207.532173] [my_sysdig:] call syscall 0x122bbec0, 2: 0x3f, 3:0x8d66090
+```
 
 ---
 
@@ -108,3 +180,11 @@ We need do some experiments to:
 - figure out the overhead.
 - judge whether the information captured is enough.
 - make a demo to finish original schedule.
+
+
+---
+
+## Acknowledgement
+
+- Chang Zhu: Introduce Sysdig
+- HongYi Lu: Help to locates the syscall number(?) in a mysterious way
