@@ -24,19 +24,6 @@ marp: true
 
 - Improve the syscall capturing, supporting record for the parameter change
 
-# Xueying
-
----
-
-## Last Week's work
-
-Took a TOEFL test.
-
----
-
-## Next week's work
-
-Use C++ to run a single assembly code from user input.
 
 # Wenxuan
 
