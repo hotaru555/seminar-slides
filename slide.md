@@ -1,15 +1,26 @@
 ---
 title: "Deterministic Replay: A Survey"
-author: "YUNJI CHEN, SHIJIN ZHANG, QI GUO, LING LI, RUIYANG WU, and TIANSHI CHEN,"
-institute: "SKL of Computer Architecture, Institute of Computing Technology, Chinese Academy of Sciences"
+author: "Xueying Zhang"
+institute: "COMPASS"
 urlcolor: blue
 colortheme: "beaver"
-date: "March 16, 2021"
+date: "March 23, 2021"
 theme: "Heverlee"
 aspectratio: 43
 lang: en-US
 marp: true
 ---
+
+## Paper info
+
+Deterministic Replay: A Survey
+- author: YUNJI CHEN, SHIJIN ZHANG, QI GUO, LING LI, RUIYANG WU, and TIANSHI CHEN
+- from Chinese Academy of Sciences
+- ACM Computing Surveys
+- Publication year： 2016
+
+---
+
 # APPLICATIONS
 
 
@@ -27,19 +38,19 @@ marp: true
 
 ### Program Debugging
 
-- probe effect / record slowdown
+- *probe effect / record slowdown*
 
 
 ### Online Program Analysis
 
 - Online program analysis monitors and checks the data flow and control flow of program
-execution on the fly, such as taint analysis (offload the heavyweight online analysis work to spare cores). ( record and replay speeds)
+execution on the fly, such as **taint analysis** (offload the heavyweight online analysis work to spare cores). ( *record and replay speeds*)
 
 
 
 ### Postsilicon Debugging
 
-- engineers often need to replay the behavior of a silicon chip on an RTL simulator with timing determinism so as to provide full visibility of internal signals for understanding the root of the silicon bug. (log size / Record slowdown)
+- engineers often need to replay the behavior of a silicon chip on an RTL simulator with timing determinism so as to provide full visibility of internal signals for understanding the root of the silicon bug. (*log size / Record slowdown*)
 
 ---
 
@@ -47,16 +58,16 @@ execution on the fly, such as taint analysis (offload the heavyweight online ana
 
 ###  Fault Tolerance
 
-- Transient fault refers to one-off misbehavior of the circuit since it is very unlikely that a transient fault can affect both the record run and the replay run (especially when they are well isolated).  (record slowdown / replay slowdown)
+- Transient fault refers to one-off misbehavior of the circuit since it is very unlikely that a transient fault can affect both the record run and the replay run (especially when they are well isolated).  (*record slowdown / replay slowdown*)
 
 
 ### Performance Prediction
 
-- Predicting the performance of a parallel program on a currently unavailable machine. (small a record slowdown)
+- Predicting the performance of a parallel program on a currently unavailable machine. (*record slowdown*)
 
 ### Intrusion Analysis
 
-- Intrusion analysis manages to understand intrusion attack and recover from intrusion damage through analyzing logs. (record slowdown / Log size)
+- Intrusion analysis manages to understand intrusion attack and recover from intrusion damage through analyzing logs. (*record slowdown / Log size*)
 
 
 
@@ -67,7 +78,7 @@ execution on the fly, such as taint analysis (offload the heavyweight online ana
 ## TAXONOMY
 
 ### Single-Processor/Multiprocessor
-- uncertain inputs from the outside world / the interprocessor communications
+uncertain inputs from the outside world / the interprocessor communications
 
 ### Single-Threaded Program/Multithreaded Program
 
@@ -77,9 +88,12 @@ We say that a deterministic replay scheme is defined at abstract level A if the 
 
 ---
 
+## TAXONOMY
+
+
 ### Abstract Level
 
-![](05.png)
+![](04.png)
 
 ---
 
@@ -113,7 +127,7 @@ content-based schemes / ordering-based schemes.
 
 ## TAXONOMY
 
-![](000.png)
+![](003.jpg)
 
 ---
 
@@ -131,12 +145,14 @@ So far SP deterministic replay schemes for single-threaded programs have already
 
 ---
 
-## nondeterministic factors:
+## SP Schemes Dedicated to Single-Threaded Programs: a mature technology
+
+### nondeterministic factors:
 
 - Uncertain instruction.
 - Uncertain function
 - System call
-- Interrupt and signal:  appended on an instruction and record the serial number of the instruction/encapsulating effects of interrupts into some library functions
+- Interrupt and signal:  appended on an instruction and record the serial number of the instruction
 - Trap
 - I/O operation
 - DMA: 
@@ -182,6 +198,7 @@ disadvantage: high recording overhead and huge logs
 
 ### ordering-based schemes: 
 Netzer and Miller [1992] proposed to further reduce the recording overhead of ordering-based schemes through pursuing the transitive **happen-before relationship** between MPI functions.
+
 1. a and b are on the same process, and a is before b in program order;
 2. there is a message sent by a and received by b;
 3. there exists an access c such that a happens before c and c happens
@@ -226,6 +243,8 @@ Two kands:  Hardware-Assisted Schemes and Software-Only Schemes
 ## Hardware-Assisted Schemes: FDR
 
 - FDR (flight data recorder) [Xu et al. 2003] utilizes directory-based cache coherence messages to carry additional information for recording orderings of shared-memory operations.
+- instruction counter (IC): count its last retire instruction
+- cache instruction counter (i : CIC[b]): count the last instruction accessing b on core i.
 
 ---
 
@@ -235,22 +254,19 @@ Two kands:  Hardware-Assisted Schemes and Software-Only Schemes
 ![](07.png)
 
 
-- instruction counter (IC): count its last retire instruction
-- cache instruction counter (i : CIC[b]): count the last instruction accessing b on core i.
-
 ---
 
 ## Hardware-Assisted Schemes: Rerun
 
 Rerun [Hower and Hill 2008] is a kind of scheme that manage to record the orderings among instruction trunks. 
 
-each trunk ends when one of its memory operations is conflicting with some memory operation of a concurrent trunk running on another core. 
+Each trunk ends when one of its memory operations is conflicting with some memory operation of a concurrent trunk running on another core. 
 
 ---
 
 ## Hardware-Assisted Schemes: Rerun
 
-![](09.png)
+![](09.png){height=90%}
 
 ---
 
@@ -273,7 +289,7 @@ each trunk ends when one of its memory operations is conflicting with some memor
 
 ## Software-Only Schemes: SMP-ReVirt
 
-![](09.png)
+![](15.png)
 
 ---
 
@@ -371,7 +387,7 @@ disadvantage: designed for the sequential consistency model
 
 - DMP-TM: 
 
-![](20.png)
+![](20.png){height=90%}
 
 ---
 
@@ -389,7 +405,7 @@ hardware:  precise instruction counting and store data buffering.
 
 ## Hardware-Assisted Schemes : RCDC
 
-![](20.png)
+![](21.png){height=90%}
 
 ---
 
@@ -426,7 +442,11 @@ CoreDet [Bergan et al.2010] is a compiler and runtime system that can enforce de
 - DMP-B executes multithread programs in rounds of quantums, each quantum in DMP-B has a fixed length. three phases: parallel phase, commit phase, and serial phase. 
 - DMP-PB  partitions the whole memory into thread-private and shared spaces to reduce the amount of buffer queries.
 
+# CONCLUSION
 
+---
+
+Though It is difficult (if not impossible) to design ideal scheme, especially for shared-memory systems, it is still feasible to design application-oriented schemes for specific application scenarios that often do not simultaneously require all five desirable characteristics.
 
 
 
