@@ -10,10 +10,8 @@ aspectratio: 43
 lang: en-US
 marp: true
 ---
+# APPLICATIONS
 
-# PRELIMINARIES
-
----
 
 ## Judgment Criteria
 
@@ -23,78 +21,118 @@ marp: true
 - implementation cost
 - probe effect
 
+---
 
-# APPLICATIONS
+## APPLICATIONS
+
+### Program Debugging
+
+- probe effect / record slowdown
+
+
+### Online Program Analysis
+
+- Online program analysis monitors and checks the data flow and control flow of program
+execution on the fly, such as taint analysis (offload the heavyweight online analysis work to spare cores). ( record and replay speeds)
+
+
+
+### Postsilicon Debugging
+
+- engineers often need to replay the behavior of a silicon chip on an RTL simulator with timing determinism so as to provide full visibility of internal signals for understanding the root of the silicon bug. (log size / Record slowdown)
 
 ---
 
-## Program Debugging
+## APPLICATIONS
 
-- llll
+###  Fault Tolerance
 
----
+- Transient fault refers to one-off misbehavior of the circuit since it is very unlikely that a transient fault can affect both the record run and the replay run (especially when they are well isolated).  (record slowdown / replay slowdown)
 
-## Online Program Analysis
 
-- Improve the syscall capturing, supporting record for the parameter change
+### Performance Prediction
 
----
+- Predicting the performance of a parallel program on a currently unavailable machine. (small a record slowdown)
 
-## Postsilicon Debugging
+### Intrusion Analysis
 
----
+- Intrusion analysis manages to understand intrusion attack and recover from intrusion damage through analyzing logs. (record slowdown / Log size)
 
-## Fault Tolerance
-
----
-
-## Performance Prediction
-
----
-
-## Intrusion Analysis
 
 
 # TAXONOMY
 
 ---
 
-## Single-Processor/Multiprocessor
+## TAXONOMY
+
+### Single-Processor/Multiprocessor
+- uncertain inputs from the outside world / the interprocessor communications
+
+### Single-Threaded Program/Multithreaded Program
+
+### Abstract Level
+
+We say that a deterministic replay scheme is defined at abstract level A if the scheme regards all the layers lower than A as the outside world of the program P
 
 ---
 
-## Single-Threaded Program/Multithreaded Program
+### Abstract Level
+
+![](05.png)
 
 ---
 
-## Abstract Level
+## TAXONOMY
+
+### MPI/Shared Memory
+
+### Message Recording Style
+
+content-based schemes / ordering-based schemes.
+
+### Shared-Memory Recording Style
+
+- recording all synchronizations and a superset of all data races
+- recording synchronizations and program outputs in the record run and managing to reproduce 
+- deterministic parallelism
+
+### Hardware Assisted/Software Only
 
 ---
 
-## MPI/Shared Memory
+## TAXONOMY
+
+### Fidelity:
+
+-  timing determinism.
+-   logical determinism
+-  output determinism.
 
 ---
 
-## Message Recording Style
+## TAXONOMY
+
+![](000.png)
 
 ---
 
-## Shared-Memory Recording Style
+## TAXONOMY
 
----
-
-## Hardware Assisted/Software Only
-
----
-
-## Fidelity
+![](001.png)
 
 # SINGLE-PROCESSOR DETERMINISTIC REPLAY SCHEMES
 
 ---
 
 ## SP Schemes Dedicated to Single-Threaded Programs: a mature technology
-### nondeterministic factors:
+
+So far SP deterministic replay schemes for single-threaded programs have already been incorporated in industry-level debuggers, and an example is GDB7.0 [GNU 2009].
+
+---
+
+## nondeterministic factors:
+
 - Uncertain instruction.
 - Uncertain function
 - System call
@@ -105,10 +143,6 @@ marp: true
 	- directly record the I/O behaviors of the CPU 
 	- one can record the time point when the DMA controller informs the processor about the end of a DMA transaction
 	- treats  the DMA device as an extra processor
-
-### a uniform way:
-
-- Narayanasamy et al. [2005] proposed BugNet, which only records the initial states of registers and the result of each first load.
 
 ---
 
