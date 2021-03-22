@@ -93,7 +93,7 @@ We say that a deterministic replay scheme is defined at abstract level A if the 
 
 ### Abstract Level
 
-![](04.png){height=90%}
+![](04.png){height=80%}
 
 ---
 
