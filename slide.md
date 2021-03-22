@@ -14,12 +14,12 @@ marp: true
 ## Paper info
 
 Deterministic Replay: A Survey
+
 - author: YUNJI CHEN, SHIJIN ZHANG, QI GUO, LING LI, RUIYANG WU, and TIANSHI CHEN
 - from Chinese Academy of Sciences
 - ACM Computing Surveys
 - Publication year： 2016
 
----
 
 # APPLICATIONS
 
@@ -84,7 +84,7 @@ uncertain inputs from the outside world / the interprocessor communications
 
 ### Abstract Level
 
-We say that a deterministic replay scheme is defined at abstract level A if the scheme regards all the layers lower than A as the outside world of the program P
+We say that a deterministic replay scheme is defined at abstract level A if the scheme regards all the layers lower than A as the **outside world** of the program P
 
 ---
 
@@ -93,7 +93,7 @@ We say that a deterministic replay scheme is defined at abstract level A if the 
 
 ### Abstract Level
 
-![](04.png)
+![](04.png){height=90%}
 
 ---
 
@@ -107,9 +107,9 @@ content-based schemes / ordering-based schemes.
 
 ### Shared-Memory Recording Style
 
-- recording all synchronizations and a superset of all data races
+- recording **all** synchronizations and a superset of all data races
 - recording synchronizations and program outputs in the record run and managing to reproduce 
-- deterministic parallelism
+- **deterministic** parallelism
 
 ### Hardware Assisted/Software Only
 
@@ -120,7 +120,7 @@ content-based schemes / ordering-based schemes.
 ### Fidelity:
 
 -  timing determinism.
--   logical determinism
+-  logical determinism
 -  output determinism.
 
 ---
@@ -157,20 +157,21 @@ So far SP deterministic replay schemes for single-threaded programs have already
 - I/O operation
 - DMA: 
 	- directly record the I/O behaviors of the CPU 
-	- one can record the time point when the DMA controller informs the processor about the end of a DMA transaction
-	- treats  the DMA device as an extra processor
+	- one can record the **time point** when the DMA controller **informs the processor** about the end of a DMA transaction
+	- treats  the DMA device as an **extra processor**
 
 ---
 
 ## SP Schemes Supporting Multithreaded Programs
 
-- need to record process scheduling
+need to record process scheduling
+
 - Virtual Machine Level: directly solve
-	- Chow et al. [2010] proposed a multistage framework for deterministic replay, which can filter the uninterested information from the recorded logs to enable replaying the interested threads only.
+	- Chow et al. [2010] proposed a multistage framework for deterministic replay, which can **filter** the uninterested information from the recorded logs to enable replaying the interested threads only.
 - System Call Level
-	- modify the operating system to record thread scheduling( Russinovich and Cogswell [1996])
+	- **modify the operating system** to record thread scheduling( Russinovich and Cogswell [1996])
 - Library Level.
-	- a common solution is to use a token to take over thread switching in both the record run and replay run [Geels et al. 2006]. Only the thread owning the token can move forward.
+	- a common solution is to use a **token** to take over thread switching in both the record run and replay run [Geels et al. 2006]. Only the thread owning the token can move forward.
 
 # MULTIPROCESSOR DETERMINISTIC REPLAY SCHEMES
 
@@ -180,8 +181,8 @@ So far SP deterministic replay schemes for single-threaded programs have already
 
 - Most programs use Message Passing Interface (MPI) to communicate with each other.
 - deal with uncertain MPI messages:
-	- content-based schemes:  records the received data of all messages [Curtis and Wittie 1982]
-	- ordering-based schemes: ecord the source of each message received by the wildcard receiving function [Netzer and Miller 1992].
+	- content-based schemes:  records the **received data of all messages** [Curtis and Wittie 1982]
+	- ordering-based schemes: ecord **the source of each message** received by the wildcard receiving function [Netzer and Miller 1992].
 
 ---
 ## Message-Passing MP Scheme:
@@ -197,12 +198,11 @@ disadvantage: high recording overhead and huge logs
 ## Message-Passing MP Scheme:
 
 ### ordering-based schemes: 
-Netzer and Miller [1992] proposed to further reduce the recording overhead of ordering-based schemes through pursuing the transitive **happen-before relationship** between MPI functions.
+Netzer and Miller [1992] proposed to further reduce the recording overhead of **ordering-based schemes** through pursuing the transitive **happen-before relationship** between MPI functions.
 
 1. a and b are on the same process, and a is before b in program order;
 2. there is a message sent by a and received by b;
-3. there exists an access c such that a happens before c and c happens
-before b.
+3. there exists an access c such that a happens before c and c happens before b.
 
 ---
 
@@ -218,8 +218,7 @@ before b.
 
 ### mixed  schemes: 
 
-MPIWiz [Xue et al. 2009] is a novel deterministic replay scheme that combines the advantages
-of content-based replay and ordering-based replay.  Intergroup messages are logged in a content-based manner, and intragroup messages are logged in an ordering-based manner.
+MPIWiz [Xue et al. 2009] is a novel deterministic replay scheme that combines the advantages of content-based replay and ordering-based replay.  **Intergroup messages** are logged in a content-based manner, and **intragroup messages** are logged in an ordering-based manner.
 
 
 ---
@@ -242,7 +241,7 @@ Two kands:  Hardware-Assisted Schemes and Software-Only Schemes
 
 ## Hardware-Assisted Schemes: FDR
 
-- FDR (flight data recorder) [Xu et al. 2003] utilizes directory-based cache coherence messages to carry additional information for recording orderings of shared-memory operations.
+- FDR (flight data recorder) [Xu et al. 2003] utilizes **directory-based cache coherence messages** to carry additional information for recording **orderings** of shared-memory operations.
 - instruction counter (IC): count its last retire instruction
 - cache instruction counter (i : CIC[b]): count the last instruction accessing b on core i.
 
@@ -258,31 +257,31 @@ Two kands:  Hardware-Assisted Schemes and Software-Only Schemes
 
 ## Hardware-Assisted Schemes: Rerun
 
-Rerun [Hower and Hill 2008] is a kind of scheme that manage to record the orderings among instruction trunks. 
+Rerun [Hower and Hill 2008] is a kind of scheme that manage to record the orderings among **instruction trunks**. 
 
-Each trunk ends when one of its memory operations is conflicting with some memory operation of a concurrent trunk running on another core. 
+Each trunk ends when one of its memory operations is **conflicting** with some memory operation of a concurrent trunk running on another core. 
 
 ---
 
 ## Hardware-Assisted Schemes: Rerun
 
-![](09.png){height=90%}
+![](09.png){height=80%}
 
 ---
 
 ## Hardware-Assisted Schemes: other researches
 
-- DeLorean [Montesinos et al. 2008]: fixed size trunks. When conflict: abort and re-execute
+- DeLorean [Montesinos et al. 2008]: **fixed size trunks**. When conflict: abort and re-execute
 - DeLorean provides an additional PicLog mode. In the mode, even the orderings between trunks are predefined
-- there are schemes that further reduce log sizes of trunk-based replay, such as Timetraveler [Voskuilen et al. 2010] and LReplay [Chen et al. 2010].
+- there are schemes that further **reduce log sizes** of trunk-based replay, such as Timetraveler [Voskuilen et al. 2010] and LReplay [Chen et al. 2010].
 
 
 ---
 
 ## Software-Only Schemes: SMP-ReVirt
 
-- SMP-ReVirt [Dunlap et al. 2008] utilizes **existing hardware page protection functionality** to detect pagegrain conflicts between memory operations of different virtual processors in a multiprocessor virtual machine.
-- It manages the read/write privilege of each page with a concurrent-read, exclusive-write (CREW) protocol
+- SMP-ReVirt [Dunlap et al. 2008] utilizes **existing hardware page protection functionality** to detect pagegrain conflicts between memory operations of different virtual processors in a **multiprocessor virtual machine**.
+- It manages the read/write privilege of each page with a **concurrent-read, exclusive-write (CREW) protocol**
 - disadvantage:  the slowdown of record run is remarkable (can even be 10 times).
 
 ---
@@ -311,9 +310,9 @@ Two kinds: Hardware-Assisted Schemes and Software-Only Schemes.
 
 ## Hardware-Assisted Schemes
 
-- Lee et al. [2009, 2011] propose to reuse existing load-based checkpoint schemes to record only program inputs. The shared-memory dependencies can be reconstructed by offline symbolic analysis.
+- Lee et al. [2009, 2011] propose to reuse existing load-based checkpoint schemes to record **only program inputs**. The shared-memory dependencies can be reconstructed by **offline symbolic analysis**.
 
-- By satisfying these constraints, the Satisfiability Modulo Theory(SMT)-based offline solver can find multiple valid totaling orders.
+- By satisfying these constraints, the Satisfiability Modulo Theory(SMT)-based offline solver can find **multiple valid totaling orders**.
 
 - disadvantage: analysing time increases very quickly as the number of processer increase.
 
@@ -343,7 +342,7 @@ Mentioned lastweek.
 
 PRES (Probabilistic Replay with Execution Sketching) is another representative software-only partial record scheme [Park et al. 2009]. 
 
-- PRES utilizes a depth-first heuristic algorithm to find a suspect data race that might be responsible for the failure of the last replay trial to reduce the attemps.
+- PRES utilizes a **depth-first heuristic algorithm** to find a suspect data race that might be responsible for the failure of the last replay trial **to reduce the attemps**.
 
 ---
 
@@ -375,9 +374,9 @@ Two kinds: Hardware-Assisted Schemes and Software-Only Schemes.
 
 DMP is a representative hardware-assisted deterministic parallelism scheme [Devietti et al. 2009].
 
-- DMP-Serial a token is used to control the memory operations of all cores.  (hardware: token)
-- DMP-ShTab divides each trunk into two parts: a parallel part and a serial part. (hardware: sharing table data structure)
-- In the DMP-TM mode, all cores are allowed to simultaneously execute in a transactional manner. (hardware: enforce a specific transaction commit order)
+- DMP-Serial a **token** is used to control the memory operations of all cores.  (hardware: token)
+- DMP-ShTab divides each trunk into **two parts**: a parallel part and a serial part. (hardware: sharing table data structure)
+- In the DMP-TM mode, all cores are allowed to simultaneously execute in a **transactional manner**. (hardware: enforce a specific transaction commit order)
 
 disadvantage: designed for the sequential consistency model
 
@@ -395,9 +394,9 @@ disadvantage: designed for the sequential consistency model
 
 Devietti et al. [2011] proposed RCDC to achieve deterministic parallelism on systems providing relaxed memory consistency models.
 
-- The execution of a round of quantums has two phases: the parallel phase and the commit phase.
-- Each core saves all stores performed in the parallel phase of a quantum in its local buffer (and thus they are temporarily invisible to other cores).
-- In the commit phase, each quantum in the round is serially committed in a deterministic order
+- The execution of a round of quantums has **two phases**: the parallel phase and the commit phase.
+- Each core saves all stores performed in the **parallel phase** of a quantum in its **local buffer** (and thus they are temporarily invisible to other cores).
+- In the commit phase, each quantum in the round is **serially committed** in a deterministic order
 
 hardware:  precise instruction counting and store data buffering.
 
@@ -419,7 +418,7 @@ Hower et al. [2011] proposed a hardware-assisted deterministic parallelism schem
 
 - focuse on enforcing deterministic synchronization orders.
 
-- use deterministic logical time (DLT) to compute a deterministic yet load-balanced interleaving of synchronizations.
+- use deterministic **logical time (DLT)** to compute a deterministic yet load-balanced interleaving of synchronizations.
 
 - disadvantage: Kendo does not consider data races
 
@@ -439,8 +438,8 @@ Hower et al. [2011] proposed a hardware-assisted deterministic parallelism schem
 CoreDet [Bergan et al.2010] is a compiler and runtime system that can enforce deterministic parallelism for all shared-memory operations
 
 - DMP-O is the software implementation of DMP-ShTab in DMP
-- DMP-B executes multithread programs in rounds of quantums, each quantum in DMP-B has a fixed length. three phases: parallel phase, commit phase, and serial phase. 
-- DMP-PB  partitions the whole memory into thread-private and shared spaces to reduce the amount of buffer queries.
+- DMP-B executes multithread programs in rounds of quantums, each quantum in DMP-B has a **fixed length**. three phases: parallel phase, commit phase, and serial phase. 
+- DMP-PB  partitions the whole memory into **thread-private and shared spaces** to reduce the amount of buffer queries.
 
 # CONCLUSION
 
